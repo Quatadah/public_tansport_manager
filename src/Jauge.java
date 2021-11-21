@@ -1,4 +1,4 @@
-
+package tec;
 /**
  * Réalisation d'une jauge sur un intervalle d'entiers.
  * <p>

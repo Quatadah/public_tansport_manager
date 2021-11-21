@@ -1,4 +1,4 @@
-
+package tec;
 /**
  * Classe faussaire pour le test unitaire fonctionnel
  * d'Autobus. 

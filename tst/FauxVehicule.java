@@ -1,7 +1,4 @@
-import src.Passager;
-import src.Vehicule;
-package tst;
-
+package tec;
 /**
  * Classe faussaire pour le test unitaire fonctionnel
  * de PassagerStandard

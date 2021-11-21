@@ -1,3 +1,4 @@
+package tec;
 class TestJauge {
 
 

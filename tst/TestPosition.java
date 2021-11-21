@@ -1,3 +1,4 @@
+package tec;
 class TestPosition {
 
     private String errorMessage(Position p){

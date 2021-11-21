@@ -1,4 +1,4 @@
-package tst;
+package tec;
 class TestPassagerStandard {
 
   public static void main (String[] args) {
@@ -12,6 +12,7 @@ class TestPassagerStandard {
 
     int nbTest = 0;
 
+    System.out.println("Testing passagerStandard ...");
     //************ Verifier l'instanciation *************
     System.out.print('.'); nbTest++;
     new TestPassagerStandard().testInstanciation();
@@ -28,6 +29,7 @@ class TestPassagerStandard {
     new TestPassagerStandard().testInteractionArret();
 
     System.out.println("(" + nbTest + "):OK: " + "tec.PassagerStandard"); 
+
   }
 
   //********************************************************

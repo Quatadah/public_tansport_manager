@@ -1,4 +1,4 @@
-
+package tec;
 /**
  * Cette interface fixe/définit/spécifie les services d'un passager
  * qui va être pris en charge par un véhicule.
