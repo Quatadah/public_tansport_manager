@@ -80,6 +80,6 @@ class Jauge {
    */
   @Override
   public String toString() {
-    return "<" + valeur + " [0," + MAX + "[>"; 
+    return "<" + (MAX - valeur) + ">"; 
   }
 }

@@ -1,6 +1,5 @@
 package tec;
 
-
 public class Autobus implements Vehicule{
     private int numeroArret;
     private final Jauge debout;
@@ -39,10 +38,12 @@ public class Autobus implements Vehicule{
     public void allerArretSuivant() {
         this.numeroArret++;
         for (Passager passager : passagerdebouts){
-            passager.nouvelArret(this, this.numeroArret);
+            if (passager != null)
+                passager.nouvelArret(this, this.numeroArret);
         }
         for (Passager passager : passagersAssis){
-            passager.nouvelArret(this, this.numeroArret);
+            if (passager != null)
+                passager.nouvelArret(this, this.numeroArret);
         }
         
     }
@@ -118,8 +119,8 @@ public class Autobus implements Vehicule{
 
     @Override
     public String toString(){
-        return "Arret : " + this.numeroArret +
-               "\nN:Assis : " + this.assis.toString() +
-               "\nN:Debout : " + this.debout.toString();
+        return "[arret " + this.numeroArret + "] " +
+               "assis" + this.assis.toString() +
+               " debout" + this.debout.toString() ;
     }
 }
