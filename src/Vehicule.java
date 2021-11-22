@@ -26,13 +26,7 @@ package tec;
  * Si la demande est acceptée, le véhicule déclenche les méthodes de 
  * modification de l'état du passager.
  */
-public interface Vehicule {
-
-  /**
-   * Indique au véhicule l'arrêt suivant en déclenche sur chaque passager 
-   * la méthode arretSuivant().
-   */
-  public void allerArretSuivant();
+interface Vehicule {
 
   /**
    *  Y-a-t-il des places assises libres ?
@@ -76,7 +70,7 @@ public interface Vehicule {
    */
   public void arretDemanderAssis(Passager p);
 
-  /**
+  /**a
    * Fait sortir un passager du véhicule.
    * @param p le passager avec une position soit assise soit debout 
    *          dans le véhicule. 

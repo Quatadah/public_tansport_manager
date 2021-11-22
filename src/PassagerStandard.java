@@ -1,6 +1,7 @@
 package tec;
 
-public class PassagerStandard implements Passager {
+
+public class PassagerStandard implements Passager, Usager {
     private String nom;
     private int destination;
     Position maPosition;
@@ -37,14 +38,6 @@ public class PassagerStandard implements Passager {
         return maPosition.estDehors();
     }
 
-    public void monterDans(Vehicule v){
-        if (v.aPlaceAssise()){
-            v.monteeDemanderAssis(this);
-        }else if (v.aPlaceDebout()){
-            v.monteeDemanderDebout(this);
-        }else {}
-    }
-
     public String nom(){
         return this.nom;
     }
@@ -63,5 +56,15 @@ public class PassagerStandard implements Passager {
     public String toString(){
         String pos = maPosition.estAssis() ? "assis" : maPosition.estDebout() ? "debout" : "dehors";
         return this.nom() + " <" + pos  + ">";
+    }
+
+    @Override
+    public void monterDans(Transport t) {
+        Vehicule v = (Vehicule) t;
+        if (v.aPlaceAssise()){
+            v.monteeDemanderAssis(this);
+        }else if (v.aPlaceDebout()){
+            v.monteeDemanderDebout(this);
+        }else {}
     }
 }

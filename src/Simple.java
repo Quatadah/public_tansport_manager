@@ -1,7 +1,7 @@
-import tec.Vehicule;
-import tec.Passager;
 import tec.Autobus;
 import tec.PassagerStandard;
+import tec.Transport;
+import tec.Usager;
 
 class Simple {
 
@@ -12,17 +12,19 @@ class Simple {
    * en parametre (x.toString()) et affiche la chaine 
    * de caracteres obtenue..
    */
-  static private void deboguerEtat (Vehicule t, Passager p) {
+  static private void deboguerEtat (Transport t, Usager p) {
+  
     System.out.println(p);
     System.out.println(t);
   }
 
   static public void main (String[] args) {
-    Vehicule serenity = new Autobus(1, 2);
+    Transport serenity = new Autobus(1, 2);
 
-    Passager kaylee = new PassagerStandard("Kaylee", 4);
-    Passager jayne = new PassagerStandard("Jayne", 4);
-    Passager inara = new PassagerStandard("Inara", 5);
+    Usager kaylee = new PassagerStandard("Kaylee", 4);
+    Usager jayne = new PassagerStandard("Jayne", 4);
+    Usager inara = new PassagerStandard("Inara", 5);
+
 
     //0
     System.out.println(serenity);

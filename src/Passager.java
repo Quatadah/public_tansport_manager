@@ -30,7 +30,7 @@ package tec;
  * Si le véhicule accepte la demande, il déclenche un des 
  * méthodes qui modifient la position du passager.
  */
-public interface Passager {
+interface Passager {
   /**
    * fournit le nom de du passager.
    */
@@ -71,13 +71,7 @@ public interface Passager {
    */
   public void changerEnDebout();
 
-  /**
-   * Cette méthode réalise le caractère à la montée du passager.
-   * Elle est appelée par le client.
-   *
-   * @param v le véhicule dans lequel va monter le passager.
-   */
-  public void monterDans(Vehicule v);
+  
   
   /**
    * Cette méthode réalise le caractère à un arrêt du passager. 

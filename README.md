@@ -16,3 +16,9 @@ make simple
 ```
 
 <strong>Simple.java</strong> is a client file that contains the implementation of the public_transport_manager
+
+## Clean
+
+```bash
+make clean
+```
