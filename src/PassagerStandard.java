@@ -8,7 +8,7 @@ public class PassagerStandard implements Passager {
     public PassagerStandard(String nom, int destination){
         this.nom = nom;
         this.destination = destination;
-        this.maPosition = new Position().dehors(); 
+        this.maPosition = Position.creerPositionInitiale(); 
     }
 
     

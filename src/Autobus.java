@@ -84,7 +84,7 @@ public class Autobus implements Vehicule{
 
     public void arretDemanderDebout(Passager p) {
         p.changerEnDebout();
-        int emplacement = this.chercherPassager(passagerdebouts, p);
+        int emplacement = this.chercherPassager(passagersAssis, p);
         passagersAssis[emplacement] = null;
         
         int emplacementVideDebout = this.emplacementVideDebout();

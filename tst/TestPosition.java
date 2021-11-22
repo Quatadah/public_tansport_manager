@@ -1,4 +1,7 @@
 package tec;
+
+
+
 class TestPosition {
 
     private String errorMessage(Position p){
@@ -41,7 +44,7 @@ class TestPosition {
     }
 
     private boolean testAssis(){
-        Position p = new Position();
+        Position p = Position.creerPositionInitiale();
         Position pAssis = p.assis();
 
         assert pAssis.estAssis() : this.errorMessage(pAssis) ;
@@ -52,7 +55,7 @@ class TestPosition {
     }
 
     private boolean testDebout(){
-        Position p = new Position();
+        Position p = Position.creerPositionInitiale();
         Position pDebout = p.debout();
 
         assert !pDebout.estAssis() : this.errorMessage(pDebout) ;
@@ -63,7 +66,7 @@ class TestPosition {
     }
 
     private boolean testDehors(){
-        Position p = new Position();
+        Position p = Position.creerPositionInitiale();
         Position pDehors = p.dehors();
 
         assert !pDehors.estAssis() : this.errorMessage(pDehors) ;
@@ -74,7 +77,7 @@ class TestPosition {
     }
 
     private boolean testInterieur(){
-        Position p = new Position();
+        Position p = Position.creerPositionInitiale();
         
         double a = Math.random();
         Position pInterieur = (a > 0.5) ? p.assis() : p.debout();
