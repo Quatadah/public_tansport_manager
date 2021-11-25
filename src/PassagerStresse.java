@@ -1,8 +1,8 @@
 package tec;
 
-public class PassagerStandard extends PassagerAbstrait{
+public class PassagerStresse extends PassagerAbstrait{
 
-    public PassagerStandard(String nom, int destination) {
+    public PassagerStresse(String nom, int destination) {
         super(nom, destination);
     }
 
@@ -17,7 +17,12 @@ public class PassagerStandard extends PassagerAbstrait{
 
     @Override
     void choixPlaceArret(Vehicule v, int numeroArret) {
-        return ;
+        if (this.get_destination() - 3 <= numeroArret){
+            if (v.aPlaceDebout()){
+                v.arretDemanderDebout(this);
+            }
+        }
+        
     }
     
 }
