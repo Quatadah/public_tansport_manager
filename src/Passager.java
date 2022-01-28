@@ -1,4 +1,5 @@
 package tec;
+
 /**
  * Cette interface fixe/définit/spécifie les services d'un passager
  * qui va être pris en charge par un véhicule.
@@ -71,8 +72,6 @@ interface Passager {
    */
   public void changerEnDebout();
 
-  
-  
   /**
    * Cette méthode réalise le caractère à un arrêt du passager. 
    * Elle est appelée par le véhicule dans lequel est monté le passager. 
@@ -81,5 +80,7 @@ interface Passager {
    * @param numeroArret numéro de l'arrêt courant.
    */
   public void nouvelArret(Vehicule v, int numeroArret);
+
+  int destination();
 }
 

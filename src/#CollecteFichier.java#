@@ -1,0 +1,60 @@
+package log;
+
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.io.IOException;
+
+public class CollecteFichier implements Collecte {
+  
+  private String nomFichier;
+  private int nbEntre;
+  private int nbSorti;
+  
+  public CollecteFichier(String nf) {
+    nomFichier = nf;
+    nbEntre = 0;
+    nbSorti = 0;
+  }
+
+  private void ecrireDans(int entre, int sorti, int arret) throws IOException {
+    FileWriter fw = new FileWriter(nomFichier, true);
+    PrintWriter pw = new PrintWriter(fw);
+
+    pw.print("Arret " + arret);
+    pw.print(", " + entre + " entré(s)");
+    pw.println(", " + sorti + " sorti(s)");
+    pw.flush();
+    
+    fw.close();
+  }
+  
+  /**
+   * Indique l'entrée d'un passager dans le transport
+   */
+  public void uneEntree(){
+    nbEntre++;
+  }
+  
+  /**
+   * Indique la sortie d'un passager dans le transport
+   */
+  public void uneSortie(){
+    nbSorti++;
+  }
+  
+  /**
+   * Indique le changement d'un arret
+   */
+  public void changerArret(Object arret){
+    try {
+      ecrireDans(nbEntre, nbSorti, (int) arret);
+      nbSorti = nbEntre = 0;
+    } catch (IOException e) {
+      System.out.println(e);
+    }
+  }
+
+  public String toString() {
+    return "";
+  }
+}

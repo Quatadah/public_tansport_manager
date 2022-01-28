@@ -1,115 +1,98 @@
 package tec;
+
 class TestJauge {
 
+  public void testDansIntervalle(){
+    int max = 67899;
+    int depart = 100;
+    Jauge intervalle = new Jauge(max, depart);
+    assert ! intervalle.estRouge() : "niveau >= max alors qu'on devait avoir niveau < max";
+    assert intervalle.estVert() : "niveau devait appartenir à [0, max[";
+  }
 
-    public static void main(String[] args) {
-        boolean estMisAssertion = false;
-        assert estMisAssertion = true;
+  public void testSuperieurIntervalle(){
+    int max = 100;
+    int depart = 101;
+    Jauge intervalle = new Jauge(max, depart);
+    assert intervalle.estRouge() : "niveau < max alors qu'on devait avoir niveau >= max";
+    assert ! intervalle.estVert() : "niveau ne devait pas appartenir à [0, max[";
+    intervalle.decrementer();
+    assert intervalle.estRouge() : "niveau < max alors qu'on devait avoir niveau >= max";
+    assert ! intervalle.estVert() : "niveau ne devait pas appartenir à [0, max[";	
+  }
+
+  public void testDepasserIntervalleDroite(){
+    int max = 100;
+    int depart = 99;
+    Jauge intervalle = new Jauge(max, depart);
+    assert ! intervalle.estRouge() : "niveau >= max alors qu'on devait avoir niveau < max";
+    assert  intervalle.estVert() : "niveau devait appartenir à [0, max[";
+    intervalle.incrementer();
+    assert intervalle.estRouge() : "niveau < max alors qu'on devait avoir niveau >= max";
+    assert ! intervalle.estVert() : "niveau ne devait pas appartenir à [0, max[";
+  }
+
+  public void testDepasserIntervalleGauche(){
+    int max = 100;
+    int depart = 0;
+    Jauge intervalle = new Jauge(max, depart);
+    assert ! intervalle.estRouge() : "niveau >= max alors qu'on devait avoir niveau < max";
+    assert intervalle.estVert() : "niveau devait appartenir à [0, max[";
+    intervalle.decrementer();
+    assert ! intervalle.estRouge() : "niveau >= max alors qu'on devait avoir niveau < max";
+    assert ! intervalle.estVert() : "niveau ne devait pas appartenir à [0, max[";
+  }
     
-        if (estMisAssertion == false){
-            System.out.println("Execution impossible sans l'option -ea");
-            return;
-        }
+  public void testNegatifIntervalle(){
+    int max = 100;
+    int depart = -1;
+    Jauge intervalle = new Jauge(max, depart);
+    assert ! intervalle.estRouge() : "niveau >= max alors qu'on devait avoir niveau < max";
+    assert ! intervalle.estVert() : "niveau ne devait pas appartenir à [0, max[";
+    intervalle.incrementer();
+    assert intervalle.estVert() : "niveau devait appartenir à [0, max[";
+    assert ! intervalle.estRouge() : "niveau >= max alors qu'on devait avoir niveau < max";
+  }
 
-        TestJauge tj = new TestJauge();
-        int nbTest = 0;
-        System.out.println("Testing Jauge ... ");
-
-        String OK1 = tj.testInferieur0() ? "OK" : "NOT OK";
-        System.out.println("    testInferieur0 : " + OK1);
-        nbTest++;
-
-        String OK2 = tj.testEgale0() ? "OK" : "NOT OK";
-        System.out.println("    testEgale0 : " + OK2  );
-        nbTest++;
-
-        String OK3 = tj.testEgaleMax() ? "OK" : "NOT OK";
-        System.out.println("    testEgaleMax : " + OK3  );
-        nbTest++;
-        
-        String OK4 = tj.testSuperieurMax() ? "OK" : "NOT OK";
-        System.out.println("    testSuperieurMax : " + OK4  );
-        nbTest++;
-
-        String OK5 = tj.testIncrementer() ? "OK" : "NOT OK";
-        System.out.println("    testIncrementer : " + OK5  );
-        nbTest++;
-
-        String OK6 = tj.testDecrementer() ? "OK" : "NOT OK";
-        System.out.println("    testDecrementer : " + OK6  );
-        nbTest++;
-
-        System.out.println("    Done : Tests(" + nbTest +"/6)");
-
+  public void testCasLimite(){
+    Jauge inverse = null;
+    try{
+      inverse = new Jauge(-42,10);
+      assert false : "Exeption non levee";
+    } catch(IllegalArgumentException e){
+      System.err.println(e.getMessage());
     }
 
-    private String isGreen(){
-        return "0 <= depart < max";
-    }
-
-    private String isRed(){
-        return " depart < 0 or depart >= max";
-    }
-
-    private boolean testSuperieurMax(){
-        int depart = 101;
-        int max = 100;
-        Jauge j = new Jauge(max, depart);
-        assert j.estRouge() : this.isGreen();
-        assert !j.estVert() : this.isGreen();
-
-        return true;
-    }
-
-    private boolean testEgaleMax(){
-        int depart = 100;
-        int max = 100;
-        Jauge j = new Jauge(max, depart);
-        assert j.estRouge() : this.isGreen();
-        assert !j.estVert() : this.isGreen();
-
-        return true;
-
-    }
-
-    private boolean testEgale0(){
-        int depart = 0;
-        int max = 100;
-        Jauge j = new Jauge(max, depart);
-        assert j.estVert() : this.isRed();
-        assert !j.estRouge() : this.isRed();
-
-        return true;
-    }
-    private boolean testInferieur0(){
-        int depart = -1;
-        int max = 100;
-        Jauge j = new Jauge(max, depart);
-        assert j.estRouge() : this.isGreen();
-        assert !j.estVert() : this.isGreen();
-        return true;
-    }
+  }
     
-    private boolean testIncrementer(){
-        int depart = 99;
-        int max = 100;
-        Jauge j = new Jauge(max, depart);
-        j.incrementer();
-        assert j.estRouge() : this.isGreen();
-        assert !j.estVert() : this.isGreen();
-        return true;
+  public static void main (String[] args){
+	
+    boolean estMisAssertion = false;
+    assert estMisAssertion = true;
+	
+    if (!estMisAssertion) {
+      System.out.println("Execution impossible sans l'option -ea");
+      return;
     }
 
-    private boolean testDecrementer(){
-        int depart = 100;
-        int max = 100;
-        Jauge j = new Jauge(max, depart);
-        j.decrementer();
-        assert !j.estRouge() : this.isRed();
-        assert j.estVert() : this.isRed();
-        return true;
-    }
+    int nbTest = 0;
+
+    System.out.print('.'); nbTest++;
+    new TestJauge().testDansIntervalle();
+    
+    System.out.print('.'); nbTest++;
+    new TestJauge().testSuperieurIntervalle();
+
+    System.out.print('.'); nbTest++;
+    new TestJauge().testNegatifIntervalle();
+
+    System.out.print('.'); nbTest++;
+    new TestJauge().testDepasserIntervalleDroite();
+
+    System.out.print('.'); nbTest++;
+    new TestJauge().testDepasserIntervalleGauche();
 
 
-
+    System.out.println("(" + nbTest + "):OK: " + "tec.TestJauge");
+  }
 }

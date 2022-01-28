@@ -28,6 +28,7 @@ package tec;
  */
 interface Vehicule {
 
+
   /**
    *  Y-a-t-il des places assises libres ?
    * @return vrai si nombre max de places assises n'est pas atteinte. 
@@ -70,7 +71,7 @@ interface Vehicule {
    */
   public void arretDemanderAssis(Passager p);
 
-  /**a
+  /**
    * Fait sortir un passager du véhicule.
    * @param p le passager avec une position soit assise soit debout 
    *          dans le véhicule. 

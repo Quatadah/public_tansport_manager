@@ -1,4 +1,5 @@
 package tec;
+
 /**
  * Classe faussaire pour le test unitaire fonctionnel
  * de PassagerStandard
@@ -12,7 +13,7 @@ package tec;
  * Il enregistre l'appel aux méthodes qui
  * doivent modifier son etat.
  */
-class FauxVehicule implements Transport, Vehicule{
+class FauxVehicule implements Transport, Vehicule {
   static final byte VIDE = 0;
   static final byte DEBOUT  = 1;
   static final byte ASSIS = 2;

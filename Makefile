@@ -1,23 +1,34 @@
-BUILD_DIR = build
 SRC_DIR = src
-TST_DIR = tst
+BUILD_DIR = build
+TEST_DIR = tst
 
-SIMPLE = Simple
-PACKAGE = tec
-TEST_EXEC = $$(find ${BUILD_DIR} -name 'Test*.class' | cut -d. -f1 | cut -d/ -f3)
+SRC_FILES = $$(find ${SRC_DIR} -name '*.java')
+SRC_EXEC = Simple
 
-all : simple
+TEST_FILES = $$(find ${TEST_DIR} -name '*.java')
+TEST_EXEC = $$(find ${BUILD_DIR} -name 'Test*.class' -exec basename {} \; | cut -d. -f1 | grep -v -e "Abstrait" -e "Arret" -e "Montee")
 
-simple : 
-	javac -d ${BUILD_DIR} ${SRC_DIR}/*.java 	
-	java -cp ${BUILD_DIR} ${SIMPLE}
+PACKAGE_NAME = tec
 
-tests :
-	javac -d ${BUILD_DIR} ${SRC_DIR}/*.java
-	javac -d ${BUILD_DIR} -cp ${BUILD_DIR}/ ${TST_DIR}/*.java
-	for e in ${TEST_EXEC} ; do\
-		java -ea -cp ${BUILD_DIR} ${PACKAGE}.$$e ; \
+all: exec
+
+alltest:
+	javac -d ${BUILD_DIR} ${SRC_FILES}
+	javac -d ${BUILD_DIR} -cp ${BUILD_DIR} ${TEST_FILES}
+	for e in ${TEST_EXEC} ; do \
+		java -ea -cp ${BUILD_DIR} ${PACKAGE_NAME}.$$e ; \
 	done
 
-clean : 
+exec:
+	javac -d ${BUILD_DIR} ${SRC_FILES}
+	java -cp ${BUILD_DIR} ${SRC_EXEC}
+
+collecteAUn:
+	javac -d ${BUILD_DIR} ${SRC_FILES}
+	java -cp ${BUILD_DIR} SimpleCollecteAUn
+
+clean:
 	rm -rf ${BUILD_DIR}/*
+
+cleanFiles:
+	rm fichier_test*.txt
