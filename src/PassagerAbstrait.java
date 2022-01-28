@@ -1,71 +1,155 @@
 package tec;
+/**
+ * Implémentation d'un Passager Standard.
+ *
+ * Le comportement de ce passager est qu'il monte dans un
+ * véhicule et ne change pas de position.
+ */
+abstract class PassagerAbstrait implements Passager, Usager{
+  private String nom ;
+  private int destination ;
+  private Position maPosition ;
+  protected ComportementArret arret;
+  
+  /** 
+   * Constructeur
+   *
+   * @param nom le nom du passager
+   * @param destination le numéro d'arrêt où il descend
+   */
+  protected PassagerAbstrait(String nom , int destination, ComportementArret a){
+    maPosition = Position.creerPositionInitiale();
+    this.nom = nom ;
+    this.destination = destination ;
+    this.arret = a;
+  }
 
-abstract class PassagerAbstrait implements Passager, Usager {
-    private String nom;
-    private int destination;
-    Position maPosition;
+  /**
+   * Accesseur du nom du passager.
+   *
+   * @return son nom
+   */
+  public String nom(){
+    return this.nom;
+  }
 
-    public PassagerAbstrait(String nom, int destination){
-        this.nom = nom;
-        this.destination = destination;
-        this.maPosition = Position.creerPositionInitiale(); 
-    }
+  protected abstract void choixPlaceMontee(Vehicule v);
 
+  final public int destination()
+  {
+    return this.destination;
+  }
+
+  /**
+   * Mutateur de la position.
+   * Prend une position assise.
+   */
+  public void changerEnAssis(){
+    this.maPosition = this.maPosition.assis();
+  }
+
+  /**
+   * Mutateur de la position.
+   * Prend une position debout.
+   */
+  public void changerEnDebout(){
+    this.maPosition = this.maPosition.debout();
+  }
+
+  /**
+   * Mutateur de la position.
+   * Prend une position dehors.
+   */
+  public void changerEnDehors(){
+    this.maPosition = this.maPosition.dehors();
+  }
+
+  /**
+   * Ma position est-elle assise ?
+   *
+   * @return vrai si elle l'est
+   */
+  public boolean estAssis(){
+    return this.maPosition.estAssis();
+  }
+
+  /**
+   * Ma position est-elle debout ?
+   *
+   * @return vrai si elle l'est
+   */
+  public boolean estDebout(){
+    return this.maPosition.estDebout();
+  }
+
+  /**
+   * Ma position est-elle dehors ?
+   *
+   * @return vrai si elle l'est
+   */
+  public boolean estDehors(){
+    return this.maPosition.estDehors();
+  }
+
+  /**
+   * Monte dans un véhicule donné.
+   * Par choix d'implémentation, la position assise est préférée.
+   *
+   * @param v le véhicule dans lequel le passager monte
+   */
+
+  public final void monterDans(Transport t) throws TecException {
+
+    Vehicule v = (Vehicule) t;
+    if (!(v instanceof Vehicule))
+      throw new TecException("Conversion de type échouée");
     
-    public void changerEnAssis(){
-        this.maPosition = maPosition.assis();
-    }
-
+    if (!this.estDehors())
+      throw new IllegalStateException("Passager deja dans bus");
     
-    public void changerEnDebout(){
-        this.maPosition = maPosition.debout();
+    choixPlaceMontee(v);
+  }
+
+  /**
+   * Vérifie le traitement à faire lors d'un nouvel arrêt.
+   *
+   * @param v le véhicule dans lequel le passager est monté
+   * @param numeroArret le nouvel arrêt
+   */
+  final public void nouvelArret(Vehicule v, int numeroArret){
+    if(this.destination() == numeroArret)
+    {
+      v.arretDemanderSortie(this);
+    } else {
+      choixPlaceArret(v, numeroArret);
     }
+  }
 
-    public void changerEnDehors(){
-        this.maPosition = maPosition.dehors();
+  protected void choixPlaceArret(Vehicule v, int numeroArret) {
+    arret.choixPlaceArret(v, numeroArret, this);
+  }
+  
+  public String toString(){
+    String nom = null;
+    if ( this.estAssis())
+    {
+      nom = "assis";
     }
-
-    public boolean estAssis(){
-        return maPosition.estAssis();
-    }
-
-    public boolean estDebout(){
-        return maPosition.estDebout();
-    }
-
-    public boolean estDehors(){
-        return maPosition.estDehors();
-    }
-
-    int get_destination(){
-        return destination;
-    }
-
-    abstract void choixPlaceMontee(Vehicule v);
-
-    abstract void choixPlaceArret(Vehicule v, int numeroArret);
-
-    public final void monterDans(Transport t){
-        Vehicule v = (Vehicule) t;
-        choixPlaceMontee(v);
-    }
-
-    public String nom(){
-        return this.nom;
-    }
-
-    final public void nouvelArret(Vehicule v, int numeroArret){
-        if (numeroArret == this.destination){
-            v.arretDemanderSortie(this);
+    else 
+    {
+      if ( this.estDebout())
+      {
+        nom = "debout";
+      }
+      else 
+      {
+        if ( this.estDehors())
+        {
+          nom = "endehors";
         }
-        else {
-            choixPlaceArret(v, numeroArret);
-        }
+      }
     }
+    return this.nom +" " + "<"+ nom +">";
+  }
 
-    @Override
-    public String toString(){
-        String pos = maPosition.estAssis() ? "assis" : maPosition.estDebout() ? "debout" : "dehors";
-        return this.nom() + " <" + pos  + ">";
-    }
 }

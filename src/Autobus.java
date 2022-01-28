@@ -1,127 +1,245 @@
 package tec;
+import java.util.ArrayList;
 
+/** 
+ * Implémentation d'un autobus.
+ *
+ * À travers l'interface Véhicule, un autobus doit savoir
+ * gérer une liste de Passager ainsi que l'avancement de son
+ * trajet.
+ */
+class Autobus implements Transport, Vehicule {
 
-public class Autobus implements Vehicule, Transport{
-    private int numeroArret;
-    private final Jauge debout;
-    private final Jauge assis;
-    private Passager[] passagersAssis;
-    private Passager[] passagerdebouts;
-
-    public Autobus(int nbPlaceAssise, int nbPlaceDebout){
-        this.numeroArret = 0;
-        this.debout = new Jauge(nbPlaceDebout, 0);
-        this.assis = new Jauge(nbPlaceAssise, 0);
-        this.passagersAssis = new Passager[nbPlaceAssise];
-        this.passagerdebouts = new Passager[nbPlaceDebout];
-    }
-
-    /*
-        @param passagers : tableau de passagers
-        @return l'emplacement d'un passager vide
-    */
-    private int emplacementVide(Passager[] passagers){
-        for(int i = 0; i < passagers.length; i++){
-            if(passagers[i] == null)
-                return i;
-        }
-        return -1;
-    }
+  private int numeroArret;
+  private final Jauge debout;
+  private final Jauge assis;
+  private ArrayList<Passager> passagersDebout;
+  private ArrayList<Passager> passagersAssis;
+  
+  /** 
+   * Constructeur
+   *
+   * @param nbPlaceAssise limite maximale de la Jauge assis
+   * @param nbPlaceDebout limite maximale de la Jauge debout
+   */
+  public Autobus(int  nbPlaceAssise, int nbPlaceDebout){
+    if (nbPlaceAssise < 0 || nbPlaceDebout < 0)
+      throw new IllegalArgumentException("place négatif");
+    debout = new Jauge(nbPlaceDebout, 0);
+    assis = new Jauge(nbPlaceAssise,0);
+    numeroArret = 0;
+    passagersAssis = new ArrayList<Passager>(nbPlaceAssise);
+    passagersDebout = new ArrayList<Passager>(nbPlaceDebout);
     
-    private int emplacementVideDebout(){
-        return emplacementVide(this.passagerdebouts);
-    }
+  }
 
-    private int emplacementVideAssis(){
-        return emplacementVide(this.passagersAssis);
+  /**
+   * Cherche dans un tableau de passagers non trié
+   * un emplacement vide.
+   *
+   * @param tabP le tableau a parcourir
+   * @return l'index de l'emplacement vide, sinon -1
+   */
+  private int chercherEmplacementVide(Passager[] tabP){
+    for(int k=0; k<tabP.length; k++){
+      if (tabP[k] == null)
+        return k;
     }
+    return -1;
+  }
 
-    public void allerArretSuivant() {
-        this.numeroArret++;
-        for (Passager passager : passagerdebouts){
-            if (passager != null)
-                passager.nouvelArret(this, this.numeroArret);
-        }
-        for (Passager passager : passagersAssis){
-            if (passager != null)
-                passager.nouvelArret(this, this.numeroArret);
-        }
+  /**
+   * Cherche un emplacement vide spécifiquement
+   * dans les places assises.
+   *
+   * @return l'index de l'emplacement vide, sinon -1
+   */
+
+  /*
+  private int chercherEmplacementVideAssis(){
+    return chercherEmplacementVide(passagersAssis);
+  }
+  */
+
+  /**
+   * Cherche un emplacement vide spécifiquement
+   * dans les places debouts.
+   *
+   * @return l'index de l'emplacement vide, sinon -1
+   */
+  /*
+  private int chercherEmplacementVideDebout(){
+    return chercherEmplacementVide(passagersDebout);
+  }
+  */
+
+  /**
+   * Cherche un passager spécifique dans un tableau donné.
+   *
+   * @param tabP le tableau à parcourir
+   * @param p    le passager à chercher
+   * @return l'index de l'emplacement trouvé, sinon -1
+   */
+  private int chercherPassager(ArrayList<Passager> tabP, Passager p){
+    return tabP.indexOf(p);
+  }
+
+  /**
+   * Cherche un passager spécifique dans les places assises.
+   *
+   * @param p le passager à chercher
+   * @return l'index de l'emplacement trouvé, sinon -1
+   */
+  private int chercherPassagerAssis(Passager p){
+    return chercherPassager(passagersAssis,p);
+  }
+
+  /**
+   * Cherche un passager spécifique dans les places debouts.
+   *
+   * @param p le passager à chercher
+   * @return l'index de l'emplacement trouvé, sinon -1
+   */
+  private int chercherPassagerDebout(Passager p){
+    return chercherPassager(passagersDebout,p);
+  }
+
+  /**
+   * Gère la modification des passagers
+   * d'un tableau donné lors d'un nouvel arrêt.
+   *
+   * @param tabP le tableau de passager
+   */
+  private void nouvelArretPassager(ArrayList<Passager> tabP){
+    ArrayList<Passager> tabCopy = (ArrayList<Passager>) tabP.clone();
+    for (Passager p : tabCopy){
+      p.nouvelArret(this, numeroArret);     
+    }
+  }
+  
+  /**
+   * Gère la modification de tous les passagers
+   * lors d'un nouvel arrêt.
+   */    
+  public void allerArretSuivant(){
+    numeroArret ++;
+    nouvelArretPassager(passagersAssis);
+    nouvelArretPassager(passagersDebout);
+  }
+
+  /**
+   * Reste-t-il des places assises ?
+   *
+   * @return vrai s'il en reste
+   */
+  public boolean aPlaceAssise(){
+    return assis.estVert();
+  }
+
+  /**
+   * Reste-t-il des places debouts ?
+   *
+   * @return vrai s'il en reste
+   */
+  public boolean aPlaceDebout(){
+    return debout.estVert();
+  }
+
+  /**
+   * Place un passager montant à une place assise.
+   *
+   * @param p le passager montant
+   */
+  public void monteeDemanderAssis(Passager p){
+    assis.incrementer();
+    passagersAssis.add(p);
+    p.changerEnAssis();
+  }
         
-    }
+  /**
+   * Place un passager montant à une place debout.
+   *
+   * @param p le passager montant
+   */    
+  public void monteeDemanderDebout(Passager p){
+    debout.incrementer();
+    passagersDebout.add(p);
+    p.changerEnDebout();
+  }
 
-    public boolean aPlaceAssise() {
-        return this.assis.estVert();
-    }
+  /**
+   * Donne une place debout à un passager assis.
+   *
+   * @param p le passager changeant
+   */
+  public void arretDemanderDebout(Passager p){
+    assis.decrementer();
+    int position = chercherPassagerAssis(p);
+    passagersAssis.remove(position);
+    monteeDemanderDebout(p);
+  }
 
+  /**
+   * Donne une place assise à un passager debout.
+   *
+   * @param p le passager changeant
+   */
+  public void arretDemanderAssis(Passager p){
+    debout.decrementer();
+    int position = chercherPassagerDebout(p);
+    passagersDebout.remove(position);
+    monteeDemanderAssis(p);
+  }
+
+  /**
+   * Sors un passager debout.
+   *
+   * @param p le passager sortant
+   */
+  private void passagerDeboutSort(Passager p){
+    int position = chercherPassagerDebout(p);
+    if (position != -1){
+      debout.decrementer();
+      passagersDebout.remove(position);
+      p.changerEnDehors();
+    }
+  }
+  /**
+   * Sors un passager assis.
+   *
+   * @param p le passager sortant
+   */
+  private void passagerAssisSort(Passager p){
+    int position = chercherPassagerAssis(p);
+    if (position != -1){
+      assis.decrementer();
+      passagersAssis.remove(position);
+      p.changerEnDehors();
+    }
+  }
     
-    public boolean aPlaceDebout() {
-        return this.debout.estVert();
+  /**
+   * Sors un passager.
+   *
+   * @param p le passager sortant
+   */
+  public void arretDemanderSortie(Passager p)
+    {
+      if (p.estDebout())
+      {
+        passagerDeboutSort(p);
+      }
+      else
+      {
+        passagerAssisSort(p);
+      }
     }
 
-    public void monteeDemanderAssis(Passager p) {
-        p.changerEnAssis();
-        int emplacement = this.emplacementVideAssis();
-        this.passagersAssis[emplacement] = p;
-        this.assis.incrementer();
-    }
-
-    
-    public void monteeDemanderDebout(Passager p) {
-        p.changerEnDebout();
-        int emplacement = this.emplacementVideDebout();
-        this.passagerdebouts[emplacement] = p;
-        this.debout.incrementer();
-    }
-
-    private int chercherPassager(Passager[] passagers, Passager p){
-        for (int i = 0; i < passagers.length; i++){
-            if (passagers[i] == p){
-                return i;
-            }
-        }
-        return -1;
-    }
-
-
-    public void arretDemanderDebout(Passager p) {
-        p.changerEnDebout();
-        int emplacement = this.chercherPassager(passagersAssis, p);
-        passagersAssis[emplacement] = null;
-        
-        int emplacementVideDebout = this.emplacementVideDebout();
-        this.passagerdebouts[emplacementVideDebout] = p;
-
-        this.assis.decrementer();
-        this.debout.incrementer();
-    }
-
-    public void arretDemanderAssis(Passager p) {
-        p.changerEnAssis();
-        int emplacement = this.chercherPassager(passagerdebouts, p);
-        passagerdebouts[emplacement] = null;
-
-        int emplacementVideAssis = this.emplacementVideDebout();
-        this.passagersAssis[emplacementVideAssis] = p;
-
-        this.assis.incrementer();
-        this.debout.decrementer();
-    }
-
-    public void arretDemanderSortie(Passager p) {        
-        if (p.estAssis()){
-            this.assis.decrementer();
-            this.passagersAssis[chercherPassager(passagersAssis, p)] = null;
-        }else {
-            this.debout.decrementer();
-            this.passagerdebouts[chercherPassager(passagerdebouts, p)] = null;
-        }
-        p.changerEnDehors();
-    }
-
-    @Override
-    public String toString(){
-        return "[arret " + this.numeroArret + "] " +
-               "assis" + this.assis.toString() +
-               " debout" + this.debout.toString() ;
-    }
+  
+  public String toString(){
+    String arret = "[arret " + numeroArret + "]";
+    String nAssis = "assis" + assis.toString();
+    String nDebout = "debout" + debout.toString();
+    return  arret + " " + nAssis + " " + nDebout;
+  }
 }

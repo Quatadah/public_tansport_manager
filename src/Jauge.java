@@ -1,4 +1,5 @@
 package tec;
+
 /**
  * Réalisation d'une jauge sur un intervalle d'entiers.
  * <p>
@@ -16,7 +17,7 @@ package tec;
  * </ul>
  * 
  * @author georgy
- * @since 2006-2021
+ * @since 2006-2019
  */
 class Jauge { 
   private int valeur;
@@ -29,7 +30,7 @@ class Jauge {
    * La position de départ n'est pas forcément dans l'intervalle 
    * [0, max[.
    *
-   * @param max valeur maximale >= 0 de l'intervalle.
+   * @param max valeur maximale > 0 de l'intervalle.
    * @param depart   position de départ de la Jauge.
    */
   public Jauge(int max, int depart) {
@@ -44,7 +45,7 @@ class Jauge {
    *
    */
   public boolean estRouge() {
-    return valeur >= MAX || valeur < 0; // !estRouge == ( valeur < MAX and valeur >= 0)
+    return valeur >= MAX;
   }
 
   /**
@@ -54,7 +55,7 @@ class Jauge {
    *
    */
   public boolean estVert() {
-    return valeur >= 0 && valeur < MAX; // !estVert == (valeur < 0 or valeur >= MAX)
+    return valeur >= 0 && valeur < MAX;
   }
 
   /**
@@ -62,14 +63,14 @@ class Jauge {
    * La position peut devenir supérieur à max.
    */
   public void incrementer() {
-    valeur++;
+    valeur ++;
   }
 
   /**
    * Décrémente la position de la jauge.
    */
   public void decrementer() {
-      valeur--;
+    valeur--;
   }
 
   /**
@@ -80,6 +81,6 @@ class Jauge {
    */
   @Override
   public String toString() {
-    return "<" + (MAX - valeur) + ">"; 
+    return "<" + (MAX-valeur) + ">"; 
   }
 }

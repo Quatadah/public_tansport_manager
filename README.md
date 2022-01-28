@@ -1,24 +1,30 @@
-# public_transport_manager
+# PG202-203 : Programmation Orientée Objet
 
-## Compilation
-  In the main directory :
+**Groupe** : 2
+**Equipe** : UneEquipeDuGroupe2
+**Étudiants** : ebaucher, kdieu, ndo001, alamhamdi001, qnasdami, rouriha
 
-```bash
-make
- ```
+##Interface approche
 
-  This command runs the compilation in the build repository
+## Architecture du projet
 
-## Execution
-  In the main directory :
-```bash
-make simple
+- **src/**   : Dossier contenant les fichiers sources.
+- **tst/**   : Dossier contenant les tests à exécuter.
+- **build/** : Dossier contenant les fichiers bytecode. 
+
+## Exécution du projet
+
+Éxecuter les tests :
+```
+$ make
 ```
 
-<strong>Simple.java</strong> is a client file that contains the implementation of the public_transport_manager
+Éxecuter le fichier d'exemple :
+```
+$ make exec
+```
 
-## Clean
-
-```bash
-make clean
+Nettoyer le dossier **build/** :
+```
+$ make clean
 ```
